@@ -58,7 +58,14 @@ class _SearchScholarIterator(object):
         # this is temporary until setup json file
         self._soup = self._nav._get_soup(url)
         self._pos = 0
-        self._rows = self._soup.find_all('div', class_='gs_r gs_or gs_scl') + self._soup.find_all('div', class_='gsc_mpat_ttl')
+        # self._rows = self._soup.find_all('div', class_='gs_r gs_or gs_scl') + self._soup.find_all('div', class_='gsc_mpat_ttl') # gs_r gs_or gs_scl gs_fmar
+        classes_to_search = [
+            'gs_r gs_or gs_scl',
+            'gs_r gs_or gs_scl gs_fmar',
+            'gsc_mpat_ttl',
+        ]
+        self._rows = [ x for c in classes_to_search for x in self._soup.find_all('div', class_=c) ]
+        
 
     def _get_total_results(self):
         if self._soup.find("div", class_="gs_pda"):
